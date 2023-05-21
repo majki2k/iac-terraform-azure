@@ -13,6 +13,7 @@ variable "location" {
 variable "storage_account_name" {
   description = "Name of the storage account"
   type        = string
+  default     = "test_storage_account"
 }
 
 
@@ -27,6 +28,7 @@ variable "account_replication_type" {
   description = "Type of the replication type"
   type        = string
   default     = "LRS"
+}
 
 variable "app_service_plan_name" {
   description = "Name of the app service plan"
@@ -43,7 +45,8 @@ variable "kind" {
 
 variable "reserved" {
   description = "IS the plan reserved"
-  type        = "true"
+  type        = bool
+  default     = "true"
 }
   
 variable "sku_tier" {
@@ -54,6 +57,8 @@ variable "sku_tier" {
 variable "sku_size" {
   type        = string
   default     = "S1"
+}
+  
   
 variable "function_app_name" {
   description = "Name of the function app"
@@ -64,7 +69,7 @@ variable "function_app_name" {
 variable "function_name" {
   description = "Name of the function"
   type        = string
-  detault     = "test-function"
+  default     = "test-function"
 }
 
 variable "function_schedule" {
