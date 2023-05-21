@@ -3,33 +3,33 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "test_resource_group" {
-  name     = "test-resource-group"
-  location = "West Europe"
+  name     = var.resource_group_name
+  location = var.location
 }
 
 resource "azurerm_storage_account" "test_storage_account" {
-  name                     = "teststorageaccount"
+  name                     = var.storage_account_name
   resource_group_name      = azurerm_resource_group.test_resource_group.name
   location                 = azurerm_resource_group.test_resource_group.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+  account_tier             = var.account_tier
+  account_replication_type = var.account_replication_type
 }
 
 resource "azurerm_app_service_plan" "test_app_service_plan" {
-  name                = "test-app-service-plan"
+  name                = var.app_service_plan_name
   location            = azurerm_resource_group.test_resource_group.location
   resource_group_name = azurerm_resource_group.test_resource_group.name
-  kind                = "Linux"
-  reserved            = true
+  kind                = var.kind
+  reserved            = var.reserved
 
   sku {
-    tier = "Standard"
-    size = "S1"
+    tier = var.sku_tier
+    size = var.sku_size
   }
 }
 
 resource "azurerm_linux_function_app" "test_linux_function_app" {
-  name                = "test-linux-function-app"
+  name                = var.function_app_name
   location            = azurerm_resource_group.test_resource_group.location
   resource_group_name = azurerm_resource_group.test_resource_group.name
   app_service_plan_id = azurerm_app_service_plan.test_app_service_plan.id
@@ -37,20 +37,20 @@ resource "azurerm_linux_function_app" "test_linux_function_app" {
 }
 
 resource "azurerm_function_app_function" "test_function_app_function" {
-  name                = "test-function"
+  name                = var.function_name
   resource_group_name = azurerm_resource_group.test_resource_group.name
   function_app_id     = azurerm_linux_function_app.test_linux_function_app.id
   storage_account_name = azurerm_storage_account.test_storage_account.name
 
   triggers = {
     timer = {
-      schedule = "0 */5 * * * *"
+      schedule = var.function_schedule
     }
   }
 
   app_settings = {
-    key1 = "value1"
-    key2 = "value2"
+    key1 = var.function_app_settings1
+    key2 = var.function_app_settings2
   }
 }
 
