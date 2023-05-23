@@ -72,21 +72,34 @@ variable "function_name" {
   default     = "test-function"
 }
 
-variable "function_schedule" {
-  description = "Schedule for the function trigger"
+variable "language" {
   type        = string
-  default     = "0 */5 * * * *"
+  default     = "Python"
 }
 
-variable "function_app_settings1" {
-  description = "Additional settings for the function app"
-  type        = string
-  default     = "value1"
+variable "python_version" {
+  type        = number
+  default     = "3.9"
 }
 
-variable "function_app_settings2" {
-  description = "Additional settings for the function app"
-  type        = string
-  default     = "value2"
+variable "config_json" {
+  default = jsonencode({
+    "bindings" = [
+      {
+        "authLevel" = "function"
+        "direction" = "in"
+        "methods"   = [
+          "get",
+          "post",
+        ]
+        "name"      = "req"
+        "type"      = "httpTrigger"
+      },
+      {
+        "direction" = "out"
+        "name"      = "$return"
+        "type"      = "http"
+      }
+    ]
+  })
 }
-
