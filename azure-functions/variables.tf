@@ -103,3 +103,10 @@ variable "config_json" {
     ]
   })
 }
+
+
+variable "test_data" {
+  default = jsonencode({
+    "name" = "Azure"
+  })
+}
